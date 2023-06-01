@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "T3L22PracaDomowa", "T3L22Pr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "T4L11PracaDomowa", "T4L11PracaDomowa\T4L11PracaDomowa.csproj", "{6708A2CB-07CF-43A2-8821-A9FCCD447D4B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "T4L13PracaDomowa", "T4L13PracaDomowa\T4L13PracaDomowa.csproj", "{5AA7A6BA-0F1B-48C5-BC3B-C31F65F2AF34}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{6708A2CB-07CF-43A2-8821-A9FCCD447D4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6708A2CB-07CF-43A2-8821-A9FCCD447D4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6708A2CB-07CF-43A2-8821-A9FCCD447D4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AA7A6BA-0F1B-48C5-BC3B-C31F65F2AF34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AA7A6BA-0F1B-48C5-BC3B-C31F65F2AF34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AA7A6BA-0F1B-48C5-BC3B-C31F65F2AF34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AA7A6BA-0F1B-48C5-BC3B-C31F65F2AF34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
