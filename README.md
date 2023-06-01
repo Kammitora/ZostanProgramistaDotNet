@@ -1,1 +1,2 @@
 # ZostanProgramistaDotNet
+nowa linia
