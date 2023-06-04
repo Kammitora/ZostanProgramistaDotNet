@@ -44,11 +44,13 @@ namespace StudentsDiary
             tbId.Text = _student.Id.ToString();
             tbFirstName.Text = _student.FirstName;
             tbLastName.Text = _student.LastName;
+            cmbGroup.SelectedItem = _student.Group;
             tbMath.Text = _student.Math;
             tbTechnology.Text = _student.Technology;
             tbPhysics.Text = _student.Physics;
             tbPolishLang.Text = _student.PolishLang;
             tbForeignLang.Text = _student.ForeignLang;
+            cbExtraClasses.Checked = _student.ExtraClasses;
             rtbComments.Text = _student.Comments;
         }
 
@@ -57,7 +59,7 @@ namespace StudentsDiary
             Close();
         }
 
-        private async void btnConfirm_Click(object sender, EventArgs e)
+        private void btnConfirm_Click(object sender, EventArgs e)
         {
             var students = _fileHelper.DeserializeFromFile();
 
@@ -74,18 +76,8 @@ namespace StudentsDiary
 
             _fileHelper.SerializeToFile(students);
 
-            await LongProcessAsync();
-
             Close();
 
-        }
-
-        private async Task LongProcessAsync()
-        {
-            await Task.Run(() =>
-            {
-                Thread.Sleep(3000);
-            });
         }
 
         private void AddNewUserToList(List<Student> students)
@@ -95,11 +87,13 @@ namespace StudentsDiary
                 Id = _studentId,
                 FirstName = tbFirstName.Text,
                 LastName = tbLastName.Text,
+                Group = cmbGroup.SelectedItem.ToString(),
                 Math = tbMath.Text,
                 Technology = tbTechnology.Text,
                 Physics = tbPhysics.Text,
                 PolishLang = tbPolishLang.Text,
                 ForeignLang = tbForeignLang.Text,
+                ExtraClasses = cbExtraClasses.Checked,
                 Comments = rtbComments.Text
             };
 

@@ -10,13 +10,13 @@ namespace StudentsDiary
     {
         private FileHelper<List<Student>> _fileHelper = new FileHelper<List<Student>>(Program.FilePath);
 
-        public bool IsMaximize 
+        public bool IsMaximize
         {
-           get
+            get
             {
                 return Settings.Default.IsMaximize;
             }
-           set
+            set
             {
                 Settings.Default.IsMaximize = value;
             }
@@ -33,21 +33,23 @@ namespace StudentsDiary
             {
                 WindowState = FormWindowState.Maximized;
             }
-    }
+        }
 
         private void SetColumnsHeader()
         {
             dgvDiary.Columns[0].HeaderText = "Numer";
             dgvDiary.Columns[1].HeaderText = "Imię";
             dgvDiary.Columns[2].HeaderText = "Nazwisko";
-            dgvDiary.Columns[3].HeaderText = "Matematyka";
-            dgvDiary.Columns[4].HeaderText = "Technologia";
-            dgvDiary.Columns[5].HeaderText = "Fizyka";
-            dgvDiary.Columns[6].HeaderText = "Język polski";
-            dgvDiary.Columns[7].HeaderText = "Język obcy";
-            dgvDiary.Columns[8].HeaderText = "Komentarze";
+            dgvDiary.Columns[3].HeaderText = "Grupa";
+            dgvDiary.Columns[4].HeaderText = "Matematyka";
+            dgvDiary.Columns[5].HeaderText = "Technologia";
+            dgvDiary.Columns[6].HeaderText = "Fizyka";
+            dgvDiary.Columns[7].HeaderText = "Język polski";
+            dgvDiary.Columns[8].HeaderText = "Język obcy";
+            dgvDiary.Columns[9].HeaderText = "Zajęcia dodatkowe";
+            dgvDiary.Columns[10].HeaderText = "Komentarze";
         }
-               
+
         private void btnAdd_Click(object sender, EventArgs e)
         {
             var addEditStudent = new AddEditStudent();
@@ -90,7 +92,7 @@ namespace StudentsDiary
 
             if (confirmDelete == DialogResult.OK)
             {
-               DeleteStudent(students, selectedStudent);
+                DeleteStudent(students, selectedStudent);
             }
         }
 
@@ -109,7 +111,14 @@ namespace StudentsDiary
         private void RefreshDiary()
         {
             var students = _fileHelper.DeserializeFromFile();
-            dgvDiary.DataSource = students.OrderBy(x => x.Id).ToList();
+            if (!(cmbGroupFilter.SelectedItem.ToString() == "Wszyscy"))
+            {
+                dgvDiary.DataSource = students.Where(x => x.Group == cmbGroupFilter.SelectedItem.ToString()).OrderBy(x => x.Id).ToList();
+            }
+            else
+            {
+                dgvDiary.DataSource = students.OrderBy(x => x.Id).ToList();
+            }
         }
 
         private void Main_FormClosed(object sender, FormClosedEventArgs e)

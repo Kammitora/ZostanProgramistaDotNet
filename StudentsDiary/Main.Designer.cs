@@ -34,6 +34,8 @@ namespace StudentsDiary
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.dgvDiary = new System.Windows.Forms.DataGridView();
+            this.cmbGroupFilter = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDiary)).BeginInit();
             this.SuspendLayout();
             // 
@@ -91,17 +93,52 @@ namespace StudentsDiary
             this.dgvDiary.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDiary.Location = new System.Drawing.Point(12, 42);
             this.dgvDiary.Name = "dgvDiary";
+            this.dgvDiary.ReadOnly = true;
             this.dgvDiary.RowHeadersVisible = false;
             this.dgvDiary.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvDiary.Size = new System.Drawing.Size(726, 359);
             this.dgvDiary.TabIndex = 4;
             // 
+            // cmbGroupFilter
+            // 
+            this.cmbGroupFilter.FormattingEnabled = true;
+            this.cmbGroupFilter.Items.AddRange(new object[] {
+            "Wszyscy",
+            "1A",
+            "1B",
+            "1C",
+            "1D",
+            "2A",
+            "2B",
+            "2C",
+            "2D",
+            "3A",
+            "3B",
+            "3C",
+            "3D"});
+            this.cmbGroupFilter.Location = new System.Drawing.Point(617, 15);
+            this.cmbGroupFilter.Name = "cmbGroupFilter";
+            this.cmbGroupFilter.Size = new System.Drawing.Size(121, 21);
+            this.cmbGroupFilter.TabIndex = 5;
+            this.cmbGroupFilter.Text = "Wszyscy";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(576, 18);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(39, 13);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Grupa:";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.Highlight;
+            this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.ClientSize = new System.Drawing.Size(750, 413);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.cmbGroupFilter);
             this.Controls.Add(this.dgvDiary);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.btnDelete);
@@ -112,6 +149,7 @@ namespace StudentsDiary
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Main_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.dgvDiary)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -122,6 +160,8 @@ namespace StudentsDiary
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.DataGridView dgvDiary;
+        private System.Windows.Forms.ComboBox cmbGroupFilter;
+        private System.Windows.Forms.Label label1;
     }
 }
 
