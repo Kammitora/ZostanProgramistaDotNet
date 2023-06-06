@@ -17,6 +17,18 @@ namespace T5L27PracaDomowa
         {
             InitializeComponent();
             RefreshDiary();
+            FillColumnNames();
+        }
+
+        private void FillColumnNames()
+        {
+            dgvDiary.Columns[0].HeaderText = "Numer";
+            dgvDiary.Columns[1].HeaderText = "Imię";
+            dgvDiary.Columns[2].HeaderText = "Nazwisko";
+            dgvDiary.Columns[3].HeaderText = "Data zatrudnienia";
+            dgvDiary.Columns[4].HeaderText = "Zwolniony";
+            dgvDiary.Columns[5].HeaderText = "Data zwolnienia";
+            dgvDiary.Columns[6].HeaderText = "Wynagrodzenie";
         }
 
         private void RefreshDiary()
@@ -28,13 +40,20 @@ namespace T5L27PracaDomowa
         private void btnAdd_Click(object sender, EventArgs e)
         {
             AddEditEmployee addEditEmployee = new AddEditEmployee();
+            addEditEmployee.FormClosing += AddEditEmployee_FormClosing; 
             addEditEmployee.ShowDialog();
 
+        }
+
+        private void AddEditEmployee_FormClosing(object sender, EventArgs e)
+        {
+            RefreshDiary();
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
             AddEditEmployee addEditEmployee = new AddEditEmployee(Convert.ToInt32(dgvDiary.SelectedRows[0].Cells[0].Value));
+            addEditEmployee.FormClosing += AddEditEmployee_FormClosing;
             addEditEmployee.ShowDialog();
         }
 

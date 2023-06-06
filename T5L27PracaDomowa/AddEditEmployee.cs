@@ -12,24 +12,22 @@ namespace T5L27PracaDomowa
 {
     public partial class AddEditEmployee : Form
     {
-        private List<Employee> _employeeList = new List<Employee>();
         private Employee _employee = new Employee();
         public AddEditEmployee(int id = 0)
         {
             InitializeComponent();
             tbFirstName.Select();
-            _employeeList = FileHelper.Deserialize();
+            var employeeList = FileHelper.Deserialize();
             if (id != 0)
             {
                 Text = "Edytuj dane pracownika";
-                _employee = _employeeList.Where(x => x.Id == id).FirstOrDefault();
-                FillTextBoxes();
+                _employee = employeeList.Where(x => x.Id == id).FirstOrDefault();
             }
             else
             {
                 _employee = new Employee()
                 {
-                    Id = _employeeList.Count + 1
+                    Id = employeeList.Count + 1
                 };
             }
             FillTextBoxes();
@@ -51,6 +49,19 @@ namespace T5L27PracaDomowa
 
         private void btnConfirm_Click(object sender, EventArgs e)
         {
+            var employeeList = FileHelper.Deserialize();
+            employeeList.RemoveAll(x => x.Id == _employee.Id);
+
+            _employee.Id = Convert.ToInt32(tbId.Text);
+            _employee.FirstName = tbFirstName.Text;
+            _employee.LastName = tbLastName.Text;
+            _employee.EmploymentDate = dtpEmploymentDate.Value;
+            _employee.Salary = Convert.ToInt32(tbSalary.Text);
+
+            employeeList.Add(_employee);
+
+            FileHelper.Serialize(employeeList);
+
             Close();
         }
     }
