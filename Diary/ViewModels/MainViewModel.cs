@@ -1,6 +1,11 @@
 ﻿using Diary.Commands;
+using Diary.Models;
+using Diary.Views;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,30 +18,162 @@ namespace Diary.ViewModels
     {
         public MainViewModel()
         {
-            RefreshStudentsCommand = new RelayCommand(RefreshStudents, CanRefreshStudents);
+            AddStudentCommand = new RelayCommand(AddEditStudent);
+            EditStudentCommand = new RelayCommand(AddEditStudent, CanEditDeleteStudent);
+            RefreshStudentsCommand = new RelayCommand(RefreshStudents);
+            DeleteStudentCommand = new AsyncRelayCommand(DeleteStudent, CanEditDeleteStudent);
+
+            RefreshDiary();
+            InitGroups();
         }
 
+        public ICommand AddStudentCommand { get; set; }
+        public ICommand EditStudentCommand { get; set; }
         public ICommand RefreshStudentsCommand { get; set; }
+        public ICommand DeleteStudentCommand { get; set; }
 
-        private string _test = "XXX";
-        public string Test
+        private Student _selectedStudent;
+        public Student SelectedStudent 
         {
-            get { return _test; }
+            get
+            {
+                return _selectedStudent;
+            }
             set
             {
-                _test = value;
+                _selectedStudent = value;
                 OnPropertyChanged();
             }
         }
-        private void RefreshStudents(object obj)
+
+        private ObservableCollection<Student> _student;
+        public ObservableCollection<Student> Students
         {
-            //MessageBox.Show("RefreshStudents");
-            Test = "YYY";
+            get
+            {
+                return _student;
+            }
+            set
+            {
+                _student = value;
+                OnPropertyChanged();
+            }
         }
 
-        private bool CanRefreshStudents(object obj)
+        private int _selectedGroupId;
+        public int SelectedGroupId
         {
-            return true;
+            get
+            {
+                return _selectedGroupId;
+            }
+            set
+            {
+                _selectedGroupId = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<Group> _groups;
+        public ObservableCollection<Group> Groups
+        {
+            get
+            {
+                return _groups;
+            }
+            set
+            {
+                _groups = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private void InitGroups()
+        {
+            Groups = new ObservableCollection<Group>
+            {
+                new Group
+                {
+                    Id = 0,
+                    Name = "Wszystkie"
+                },
+                new Group
+                {
+                    Id = 1,
+                    Name = "1A"
+                },
+                new Group
+                {
+                    Id = 2,
+                    Name = "1B"
+                },
+            };
+
+            SelectedGroupId = 0;
+        }
+
+        private void RefreshDiary()
+        {
+            Students = new ObservableCollection<Student>
+            {
+                new Student
+                {
+                    FirstName = "Kamil",
+                    LastName = "Kowalski",
+                    Group = new Group {Id = 1}
+                },
+                new Student
+                {
+                    FirstName = "Aleksandra",
+                    LastName = "Krzywiecka",
+                    Group = new Group {Id = 2}
+                },
+                new Student
+                {
+                    FirstName = "Bartłomiej",
+                    LastName = "Łebkowski",
+                    Group = new Group {Id = 3}
+                },
+            };
+        }
+
+        private void AddEditStudent(object obj)
+        {
+            var addEditStudentWindow = new AddEditStudentView(obj as Student); // nie jest to dobre rozwiązanie, powinno być dependency injection
+            addEditStudentWindow.Closed += AddEditStudentWindow_Closed;
+            addEditStudentWindow.ShowDialog();
+        }
+
+        private void AddEditStudentWindow_Closed(object sender, EventArgs e)
+        {
+            RefreshDiary();
+        }
+
+        private void RefreshStudents(object obj)
+        {
+            RefreshDiary();
+        }
+        private async Task DeleteStudent(object obj)
+        {
+            var metroWindow = Application.Current.MainWindow as MetroWindow;
+            var dialog = await metroWindow.ShowMessageAsync(
+                "Usuwanie ucznia", 
+                $"Czy na pewno chcesz usunąć ucznia {SelectedStudent.FirstName} {SelectedStudent.LastName}?", 
+                MessageDialogStyle.AffirmativeAndNegative);
+
+            if (dialog != MessageDialogResult.Affirmative)
+            {
+                return;
+            }
+
+            //usuwanie ucznia z bazy
+
+            RefreshDiary();
+        }
+
+        private bool CanEditDeleteStudent(object obj)
+        {
+            return SelectedStudent != null;
         }
     }
 }
