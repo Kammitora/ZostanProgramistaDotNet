@@ -1,5 +1,6 @@
 ﻿using Diary.Commands;
 using Diary.Models;
+using Diary.Models.Wrappers;
 using Diary.Views;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
@@ -32,8 +33,8 @@ namespace Diary.ViewModels
         public ICommand RefreshStudentsCommand { get; set; }
         public ICommand DeleteStudentCommand { get; set; }
 
-        private Student _selectedStudent;
-        public Student SelectedStudent 
+        private StudentWrapper _selectedStudent;
+        public StudentWrapper SelectedStudent 
         {
             get
             {
@@ -46,8 +47,8 @@ namespace Diary.ViewModels
             }
         }
 
-        private ObservableCollection<Student> _student;
-        public ObservableCollection<Student> Students
+        private ObservableCollection<StudentWrapper> _student;
+        public ObservableCollection<StudentWrapper> Students
         {
             get
             {
@@ -74,8 +75,8 @@ namespace Diary.ViewModels
             }
         }
 
-        private ObservableCollection<Group> _groups;
-        public ObservableCollection<Group> Groups
+        private ObservableCollection<GroupWrapper> _groups;
+        public ObservableCollection<GroupWrapper> Groups
         {
             get
             {
@@ -90,19 +91,19 @@ namespace Diary.ViewModels
 
         private void InitGroups()
         {
-            Groups = new ObservableCollection<Group>
+            Groups = new ObservableCollection<GroupWrapper>
             {
-                new Group
+                new GroupWrapper
                 {
                     Id = 0,
                     Name = "Wszystkie"
                 },
-                new Group
+                new GroupWrapper
                 {
                     Id = 1,
                     Name = "1A"
                 },
-                new Group
+                new GroupWrapper
                 {
                     Id = 2,
                     Name = "1B"
@@ -114,32 +115,32 @@ namespace Diary.ViewModels
 
         private void RefreshDiary()
         {
-            Students = new ObservableCollection<Student>
+            Students = new ObservableCollection<StudentWrapper>
             {
-                new Student
+                new StudentWrapper
                 {
                     FirstName = "Kamil",
                     LastName = "Kowalski",
-                    Group = new Group {Id = 1}
+                    Group = new GroupWrapper {Id = 1}
                 },
-                new Student
+                new StudentWrapper
                 {
                     FirstName = "Aleksandra",
                     LastName = "Krzywiecka",
-                    Group = new Group {Id = 2}
+                    Group = new GroupWrapper {Id = 2}
                 },
-                new Student
+                new StudentWrapper
                 {
                     FirstName = "Bartłomiej",
                     LastName = "Łebkowski",
-                    Group = new Group {Id = 3}
+                    Group = new GroupWrapper {Id = 3}
                 },
             };
         }
 
         private void AddEditStudent(object obj)
         {
-            var addEditStudentWindow = new AddEditStudentView(obj as Student); // nie jest to dobre rozwiązanie, powinno być dependency injection
+            var addEditStudentWindow = new AddEditStudentView(obj as StudentWrapper); // nie jest to dobre rozwiązanie, powinno być dependency injection
             addEditStudentWindow.Closed += AddEditStudentWindow_Closed;
             addEditStudentWindow.ShowDialog();
         }
