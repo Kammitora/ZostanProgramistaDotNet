@@ -1,5 +1,6 @@
 ﻿using Diary.Commands;
 using Diary.Models;
+using Diary.Models.Domains;
 using Diary.Models.Wrappers;
 using Diary.Views;
 using MahApps.Metro.Controls;
@@ -17,24 +18,34 @@ namespace Diary.ViewModels
 {
     class MainViewModel : ViewModelBase
     {
+        private Repository _repository = new Repository();
         public MainViewModel()
         {
             AddStudentCommand = new RelayCommand(AddEditStudent);
             EditStudentCommand = new RelayCommand(AddEditStudent, CanEditDeleteStudent);
             RefreshStudentsCommand = new RelayCommand(RefreshStudents);
             DeleteStudentCommand = new AsyncRelayCommand(DeleteStudent, CanEditDeleteStudent);
+            SettingsCommand = new RelayCommand(ManageSettings);
 
             RefreshDiary();
             InitGroups();
+        }
+
+        private void ManageSettings(object obj)
+        {
+            var settingsWindow = new SettingsWindow();
+            settingsWindow.Closed += DialogWindow_Closed;
+            settingsWindow.ShowDialog();
         }
 
         public ICommand AddStudentCommand { get; set; }
         public ICommand EditStudentCommand { get; set; }
         public ICommand RefreshStudentsCommand { get; set; }
         public ICommand DeleteStudentCommand { get; set; }
+        public ICommand SettingsCommand { get; set; }
 
         private StudentWrapper _selectedStudent;
-        public StudentWrapper SelectedStudent 
+        public StudentWrapper SelectedStudent
         {
             get
             {
@@ -75,8 +86,8 @@ namespace Diary.ViewModels
             }
         }
 
-        private ObservableCollection<GroupWrapper> _groups;
-        public ObservableCollection<GroupWrapper> Groups
+        private ObservableCollection<Group> _groups;
+        public ObservableCollection<Group> Groups
         {
             get
             {
@@ -91,61 +102,27 @@ namespace Diary.ViewModels
 
         private void InitGroups()
         {
-            Groups = new ObservableCollection<GroupWrapper>
-            {
-                new GroupWrapper
-                {
-                    Id = 0,
-                    Name = "Wszystkie"
-                },
-                new GroupWrapper
-                {
-                    Id = 1,
-                    Name = "1A"
-                },
-                new GroupWrapper
-                {
-                    Id = 2,
-                    Name = "1B"
-                },
-            };
+            var groups = _repository.GetGroups();
+            groups.Insert(0, new Group { Id = 0, Name = "Wszystkie" });
+
+            Groups = new ObservableCollection<Group>(groups);
 
             SelectedGroupId = 0;
         }
 
         private void RefreshDiary()
         {
-            Students = new ObservableCollection<StudentWrapper>
-            {
-                new StudentWrapper
-                {
-                    FirstName = "Kamil",
-                    LastName = "Kowalski",
-                    Group = new GroupWrapper {Id = 1}
-                },
-                new StudentWrapper
-                {
-                    FirstName = "Aleksandra",
-                    LastName = "Krzywiecka",
-                    Group = new GroupWrapper {Id = 2}
-                },
-                new StudentWrapper
-                {
-                    FirstName = "Bartłomiej",
-                    LastName = "Łebkowski",
-                    Group = new GroupWrapper {Id = 3}
-                },
-            };
+            Students = new ObservableCollection<StudentWrapper>(_repository.GetStudents(SelectedGroupId));
         }
 
         private void AddEditStudent(object obj)
         {
             var addEditStudentWindow = new AddEditStudentView(obj as StudentWrapper); // nie jest to dobre rozwiązanie, powinno być dependency injection
-            addEditStudentWindow.Closed += AddEditStudentWindow_Closed;
+            addEditStudentWindow.Closed += DialogWindow_Closed;
             addEditStudentWindow.ShowDialog();
         }
 
-        private void AddEditStudentWindow_Closed(object sender, EventArgs e)
+        private void DialogWindow_Closed(object sender, EventArgs e)
         {
             RefreshDiary();
         }
@@ -158,8 +135,8 @@ namespace Diary.ViewModels
         {
             var metroWindow = Application.Current.MainWindow as MetroWindow;
             var dialog = await metroWindow.ShowMessageAsync(
-                "Usuwanie ucznia", 
-                $"Czy na pewno chcesz usunąć ucznia {SelectedStudent.FirstName} {SelectedStudent.LastName}?", 
+                "Usuwanie ucznia",
+                $"Czy na pewno chcesz usunąć ucznia {SelectedStudent.FirstName} {SelectedStudent.LastName}?",
                 MessageDialogStyle.AffirmativeAndNegative);
 
             if (dialog != MessageDialogResult.Affirmative)
@@ -167,10 +144,24 @@ namespace Diary.ViewModels
                 return;
             }
 
-            //usuwanie ucznia z bazy
+            _repository.DeleteStudent(SelectedStudent.Id);
 
             RefreshDiary();
         }
+
+        //private async Task HandleProblemWithConnectionString()
+        //{
+        //    var metroWindow = Application.Current.MainWindow as MetroWindow;
+        //    var dialog = await metroWindow.ShowMessageAsync(
+        //        "Błędny ConnectionString",
+        //        $"Twój connection string prawdopodobnie jest nieprawidłowy. Czy chcesz zmienić ustawienia?",
+        //        MessageDialogStyle.AffirmativeAndNegative);
+
+        //    if (dialog != MessageDialogResult.Affirmative)
+        //    {
+        //        return;
+        //    }
+        //}
 
         private bool CanEditDeleteStudent(object obj)
         {

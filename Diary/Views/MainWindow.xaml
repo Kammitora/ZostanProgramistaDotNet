@@ -7,7 +7,6 @@
         xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Name="AddEditStudentWindow"
         Title="Dziennik ucznia" Height="450" Width="1000">
 
     <Grid>
@@ -15,7 +14,19 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition />
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1">
+            <Button 
+                Command="{Binding SettingsCommand}"
+                Content="Ustawienia" 
+                Height="25" 
+                Width="100" 
+                Margin="5" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" >
             <Button 
                 Command="{Binding AddStudentCommand}" 
                 Content="Dodaj" 
@@ -53,6 +64,7 @@
         </StackPanel>
         <DataGrid 
             Grid.Row="1" 
+            Grid.ColumnSpan="2"
             Margin="5" 
             ItemsSource="{Binding Students}"
             SelectedItem="{Binding SelectedStudent}"
@@ -61,7 +73,6 @@
             SelectionMode="Single"
             AutoGenerateColumns="False" >
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Id}" Visibility="Hidden" />
                 <DataGridTextColumn Binding="{Binding FirstName}" Header="Imię" />
                 <DataGridTextColumn Binding="{Binding LastName}" Header="Nazwisko" />
                 <DataGridTextColumn Binding="{Binding Comments}" Header="Komentarze" />

@@ -8,9 +8,15 @@ namespace Diary
 {
     public class ApplicationDBContext : DbContext
     {
-        public ApplicationDBContext()
-            : base("name=ApplicationDBContext")
+        
+        private static string _cnn = $@"Server={Properties.Settings.Default.ServerAddress}\"+
+                                     $@"{Properties.Settings.Default.ServerName};"+
+                                     $@"Database={Properties.Settings.Default.DatabaseName};"+
+                                     $@"User Id={Properties.Settings.Default.User};"+
+                                     $@"Password={Properties.Settings.Default.Password};";
+        public ApplicationDBContext() : base(nameOrConnectionString: _cnn)
         {
+            
         }
 
         public DbSet<Student> Students { get; set; }

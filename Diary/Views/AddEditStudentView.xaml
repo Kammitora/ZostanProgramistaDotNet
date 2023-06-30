@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         WindowStartupLocation="CenterScreen"
+        Name="AddEditStudentWindow"
         Title="Dane ucznia" Height="520" Width="400">
     <Grid>
         <Grid.RowDefinitions>
@@ -38,10 +39,10 @@
             Margin="5"/>
 
         <Label Content="Imię:" Grid.Row="1" Margin="5" />
-        <TextBox Text="{Binding Student.FirstName}" Grid.Row="1" Grid.Column="1" Margin="5"/>
+        <TextBox Text="{Binding Student.FirstName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Grid.Row="1" Grid.Column="1" Margin="5"/>
 
         <Label Content="Nazwisko:" Grid.Row="2" Margin="5" />
-        <TextBox Text="{Binding Student.LastName}" Grid.Row="2" Grid.Column="1" Margin="5"/>
+        <TextBox Text="{Binding Student.LastName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Grid.Row="2" Grid.Column="1" Margin="5"/>
 
         <Label Content="Matematyka:" Grid.Row="3" Margin="5" />
         <TextBox Text="{Binding Student.Math}" Grid.Row="3" Grid.Column="1" Margin="5"/>
@@ -61,7 +62,7 @@
         <Label Content="Grupa:" Grid.Row="8" Margin="5" />
         <ComboBox 
             ItemsSource="{Binding Groups}"
-            SelectedValue="{Binding Student.Group.Id}"
+            SelectedValue="{Binding Student.Group.Id, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
             DisplayMemberPath="Name"
             SelectedValuePath="Id"
             Grid.Row="8" 
