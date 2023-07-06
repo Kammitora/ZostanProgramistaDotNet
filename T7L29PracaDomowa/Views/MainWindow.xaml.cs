@@ -11,7 +11,6 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 using T7L29PracaDomowa.ViewModels;
 
@@ -20,12 +19,20 @@ namespace T7L29PracaDomowa.Views
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class LoginWindow : MetroWindow
+    public partial class MainWindow : MetroWindow
     {
-        public LoginWindow()
+        public MainWindow()
         {
+            //Login();
             InitializeComponent();
-            DataContext = new LoginViewModel();
+            DataContext = new MainViewModel();
         }
+
+        private void Login()
+        {
+            LoginWindow loginWindow = new LoginWindow();
+            _ = loginWindow.ShowDialog();
+        }
+        
     }
 }
